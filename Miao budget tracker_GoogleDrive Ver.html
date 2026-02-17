@@ -871,7 +871,9 @@
                 'https://www.googleapis.com/drive/v3/files',
                 {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         name: DRIVE_FOLDER_NAME,
                         mimeType: 'application/vnd.google-apps.folder'
@@ -964,7 +966,7 @@
                         '',
                         payload,
                         '--' + boundary + '--'
-                    ].join('');
+                    ].join('\r\n');
 
                     await driveRequest(
                         `https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=multipart`,
@@ -992,13 +994,15 @@
                         '',
                         payload,
                         '--' + boundary + '--'
-                    ].join('');
+                    ].join('\r\n');
 
                     const createResp = await driveRequest(
                         'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
                         {
                             method: 'POST',
-                            headers: { 'Content-Type': `multipart/related; boundary="${boundary}"` },
+                            headers: {
+                                'Authorization': `Bearer ${accessToken}`,
+                                'Content-Type': `multipart/related; boundary="${boundary}"` },
                             body: body
                         }
                     );
