@@ -761,7 +761,7 @@
         // =============================================
         const GOOGLE_CLIENT_ID  = '22224752656-7vhjf93bnntp3kpb0ine0ooi2tqjrf4j.apps.googleusercontent.com';
         const GOOGLE_API_KEY    = 'AIzaSyDaLz__2G-ZpErwwmnC_qTzxIQqPcmiVsQ';
-        const DRIVE_FOLDER_NAME = '收支管理表';       // Drive 裡的資料夾名稱
+        const DRIVE_FOLDER_NAME = '妙妙行政/收支管理表';       // Drive 裡的資料夾名稱
         const JSON_FILENAME     = 'budget-data.json'; // 資料檔名
 
         // =============================================
@@ -857,7 +857,7 @@
         async function getOrCreateFolder() {
             // 搜尋是否已有同名資料夾
             const q = encodeURIComponent(
-                `name='${DRIVE_FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false and sharedWithMe = true`
+                `name='${DRIVE_FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false`
             );
             const resp = await driveRequest(
                 `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)&supportsAllDrives=true&includeItemsFromAllDrives=true`
@@ -890,7 +890,7 @@
                 `name='${JSON_FILENAME}' and '${folderId}' in parents and trashed=false`
             );
             const resp = await driveRequest(
-                `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,modifiedTime)`
+                `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,modifiedTime)&supportsAllDrives=true&includeItemsFromAllDrives=true`
             );
             const data = await resp.json();
             return (data.files && data.files.length > 0) ? data.files[0] : null;
