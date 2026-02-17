@@ -1,0 +1,44 @@
+name: Deploy static content to Pages
+
+on:
+  push:
+    branches: ["main"] # 當 main 分支有更新時觸發
+
+# 設定權限，允許 Action 部署到 Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 確保同時只有一個部署任務在執行
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Pages ⚙️
+        uses: actions/configure-pages@v4
+
+      - name: Inject API Key 💉
+        # 在這裡處理你的 API Key 替換
+        run: |
+          sed -i "s/__GOOGLE_API_KEY__/${{ secrets.GOOGLE_API_KEY }}/g" budget_tracker.html
+
+      - name: Upload artifact ⬆️
+        # 將當前目錄的所有檔案打包（Artifact）
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v4
