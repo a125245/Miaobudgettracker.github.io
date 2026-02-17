@@ -761,7 +761,8 @@
         // =============================================
         const GOOGLE_CLIENT_ID  = '22224752656-7vhjf93bnntp3kpb0ine0ooi2tqjrf4j.apps.googleusercontent.com';
         const GOOGLE_API_KEY    = 'AIzaSyDaLz__2G-ZpErwwmnC_qTzxIQqPcmiVsQ';
-        const DRIVE_FOLDER_NAME = '妙妙行政/收支管理表';       // Drive 裡的資料夾名稱
+        const MIAO_ROOT_ID = '1UoI1RAaeNyb_PG6uaqwog0wLOKT2Qdx8';
+        const DRIVE_FOLDER_NAME = '收支管理表';       // Drive 裡的資料夾名稱
         const JSON_FILENAME     = 'budget-data.json'; // 資料檔名
 
         // =============================================
@@ -876,6 +877,7 @@
                         'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         name: DRIVE_FOLDER_NAME,
+                        parents: [MIAO_ROOT_ID],
                         mimeType: 'application/vnd.google-apps.folder'
                     })
                 }
