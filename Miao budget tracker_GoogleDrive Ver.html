@@ -857,10 +857,10 @@
         async function getOrCreateFolder() {
             // 搜尋是否已有同名資料夾
             const q = encodeURIComponent(
-                `name='${DRIVE_FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false`
+                `name='${DRIVE_FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false and sharedWithMe = true`
             );
             const resp = await driveRequest(
-                `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`
+                `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)&supportsAllDrives=true&includeItemsFromAllDrives=true`
             );
             const data = await resp.json();
             if (data.files && data.files.length > 0) {
@@ -901,6 +901,7 @@
             if (!accessToken) { alert('請先登入 Google！'); return; }
             setBadge('🔄 載入中...', '#FFC107');
             try {
+                
                 const folderId = await getOrCreateFolder();
                 const file     = await findDataFile(folderId);
 
